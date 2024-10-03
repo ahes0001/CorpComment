@@ -5,7 +5,7 @@ type FeedbackItem = {
   badgeLetter: string;
   companyName: string;
   text: string;
-  daysAgo: string;
+  daysAgo: number;
 };
 type FeedbackItemProps = {feedbackItem : FeedbackItem};
 
