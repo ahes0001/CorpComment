@@ -1,11 +1,27 @@
 import { useEffect, useState } from "react";
 import FeedbackItem from "./FeedbackItem";
 import ErrorMessage from "./ErrorMessage";
+import { TFeedbackItem } from "../lib/types";
 
 export default function FeedbackList() {
-  const [feedbackItems, setFeedbackItems] = useState([]);
+  const [feedbackItems, setFeedbackItems] = useState<TFeedbackItem[]>([]);
   const [isloading, setIsLoading] = useState(false);
   const [errorMessage, setErrorMessage] = useState("");
+
+  const handdleAddFeedback = (text:string) => {
+    const companyName = text.split(" ").find(word => word.includes('#'))!.substring(1);
+    const newItem:TFeedbackItem = {
+      id: new Date().getTime(),
+      text: text,
+      companyName: companyName,
+      daysAgo: 0,
+      upvoteCount: 0,
+      badgeLetter: companyName.substring(0, 1).toUpperCase()
+
+
+    };
+    setFeedbackItems([...feedbackItems , newItem]);
+  };
 
   useEffect(() => {
     const fetchFeedbacksItems = async () => {
