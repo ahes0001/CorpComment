@@ -1,6 +1,6 @@
 import FeedbackItem from "./FeedbackItem";
-import ErrorMessage from "./ErrorMessage";
-import { TFeedbackItem } from "../lib/types";
+import ErrorMessage from "../ErrorMessage";
+import { TFeedbackItem } from "../../lib/types";
 
 type FeedbackListProps = {
   feedbackItems: Array<TFeedbackItem>;
