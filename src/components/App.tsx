@@ -2,12 +2,17 @@ import { useEffect, useState } from "react";
 import { TFeedbackItem } from "../lib/types";
 import Container from "./layout/Container";
 import Footer from "./layout/Footer";
-import HashtagList from "./HashtagList";
+import HashtagList from "./hashtag/HashtagList";
 
 function App() {
   const [feedbackItems, setFeedbackItems] = useState<TFeedbackItem[]>([]);
   const [isloading, setIsLoading] = useState(false); //needs drilling
   const [errorMessage, setErrorMessage] = useState(""); //needs drilling
+
+  const [companySelection, setCompanySelection] = useState("All");
+
+  const filteredFeedBackItems = feedbackItems.filter((Item)=> companySelection =="All" || Item.company == companySelection);
+
 
   const handleAddToList = async (text:string) => {
     const companyName = text.split(" ").find(word => word.includes('#'))!.substring(1);
@@ -35,6 +40,19 @@ function App() {
 
 
   };
+
+  const companyList = feedbackItems.map((item) => item.company).filter(
+    (company, index, array) => {
+      // return true if the company is the first occurence in the array
+      // this is why we use the index of the company in the array
+      return array.indexOf(company) === index;
+    }
+  );
+
+  const handleCompanySelection = (company: string) => {
+    setCompanySelection(company);
+  }
+
 
   useEffect(() => {
     const fetchFeedbacksItems = async () => {
@@ -85,12 +103,12 @@ function App() {
     <div className="app">
       <Footer />
 
-      <Container feedbackItems = {feedbackItems} isloading = {isloading} errorMessage = {errorMessage}
+      <Container feedbackItems = {filteredFeedBackItems} isloading = {isloading} errorMessage = {errorMessage}
       handleAddToList = {handleAddToList}
       />
       
 
-      <HashtagList />
+      <HashtagList companyList ={companyList} handleCompanySelection = {handleCompanySelection}/>
     </div>
   );
 }
